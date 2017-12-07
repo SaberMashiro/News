@@ -1,7 +1,9 @@
-CREATE TABLE users (
+USE news;
+
+CREATE TABLE user (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(32) NOT NULL,
-    password VARCHAR(32)
+    password VARCHAR(32) NOT NULL
 );
 
 CREATE TABLE category (
@@ -14,20 +16,20 @@ CREATE TABLE news (
     cat_id INT,
     user_id INT,
     title VARCHAR(128) NOT NULL,
-    content TEXT,
+    content TEXT NOT NULL,
     attachment TEXT,
     time TIMESTAMP,
     clicks INT,
-    CONSTRAINT fk_news_cat FOREIGN KEY(cat_id) REFERENCES category(cat_id),
-    CONSTRAINT fk_news_user FOREIGN KEY(user_id) REFERENCES user(user_id)
+    CONSTRAINT fk_news_cat FOREIGN KEY(cat_id) REFERENCES category(cat_id) ON DELETE CASCADE,
+    CONSTRAINT fk_news_user FOREIGN KEY(user_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE review (
     rev_id INT AUTO_INCREMENT PRIMARY KEY,
     news_id INT,
-    content TEXT,
+    content TEXT NOT NULL,
     time TIMESTAMP,
     state VARCHAR(16),
     ip VARCHAR(32),
-    CONSTRAINT fk_review_news FOREIGN KEY(news_id) REFERENCES news(news_id)
+    CONSTRAINT fk_review_news FOREIGN KEY(news_id) REFERENCES news(news_id) ON DELETE CASCADE
 );
