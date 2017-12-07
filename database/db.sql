@@ -1,0 +1,5 @@
+CREATE DATABASE news;
+
+CREATE USER admin IDENTIFIED BY '123456';
+
+GRANT ALL ON news.* TO admin;
