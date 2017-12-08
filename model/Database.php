@@ -48,16 +48,16 @@ class Database {
     /**
 	* XSS防御
 	*/
-	private function xssPrevent($str) {
-		if (!is_array($str)) {
+    private function xssPrevent($str) {
+        if (!is_array($str)) {
             $str = htmlspecialchars($str, ENT_QUOTES);
         }
-		else {
-			foreach ($str as $key=>$value) {
-				$value = $this->xssPrevent($value);
-			}
-		}
-		return $str;
+        else {
+            foreach ($str as $key=>$value) {
+                $value = $this->xssPrevent($value);
+            }
+        }
+        return $str;
     }
 
 	/** 
