@@ -1,7 +1,5 @@
 <?php
-
 class Database {
-
     private $user;  // 用户名
     private $password;  // 密码
     private $database;  // 数据库名
@@ -11,23 +9,21 @@ class Database {
     private $charset = 'utf8';  // 字符编码
     private $persistent = true;  // 是否使用持久连接
     private static $connect = null;  //静态属性, 避免重复连接
-
     /**
      * 构造函数
      * 参数：用户名，密码，数据库名，主机，端口
      */
-    public function __construct($user = 'admin', $password = '123456', $database = 'news', $host = 'localhost', $port = '3306') {
+    public function __construct($user = 'root', $password = '123456', $database = 'news', $host = 'localhost', $port = '3306') {
         class_exists('PDO') or die('PDO class not found: check the PDO extension configuration in php.ini.');
         $this->user = $user;
         $this->password = $password;
         $this->database = $database;
         $this->host = $host;
         $this->port = $port;
-        if (!connect) {
+        if (!self::$connect) {
             $this->connect();
         }
     }
-
     /**
      * 连接建立函数
      * 参数：无
@@ -47,7 +43,6 @@ class Database {
         }
         self::$connect = $conn;
     }
-
     /**
 	* XSS防御
 	*/
@@ -62,7 +57,6 @@ class Database {
 		}
 		return $str;
 	}
-
 	/** 
     * 取得表的字段信息
     * 参数：表名
@@ -78,7 +72,6 @@ class Database {
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return array_column($result, 'column_name');
     }
-
 	/**
     * 查询语句
     * 参数：查询语句字符串，查询语句参数
@@ -88,8 +81,7 @@ class Database {
         is_array($params) or die('Query parameters wrong.');
         $statement = self::$connect->prepare($query);
         $statement->execute($params);
-        $result = $statement->fecthAll(PDO::FETCH_ASSOC);
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $this->xssPrevent($result);
     }
-
 }
