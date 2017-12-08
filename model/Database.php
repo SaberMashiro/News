@@ -46,8 +46,8 @@ class Database {
     }
 
     /**
-	* XSS防御
-	*/
+    * XSS防御
+    */
     private function xssPrevent($str) {
         if (!is_array($str)) {
             $str = htmlspecialchars($str, ENT_QUOTES);
@@ -60,7 +60,7 @@ class Database {
         return $str;
     }
 
-	/** 
+    /** 
     * 取得表的字段信息
     * 参数：表名
     * 返回值：数组
@@ -76,10 +76,10 @@ class Database {
         return array_column($result, 'column_name');
     }
 
-	/**
+    /**
     * 查询语句
     * 参数：查询语句字符串，查询语句参数
-	* 返回值：二维数组【行号】【字段名】，经过XSS过滤
+    * 返回值：二维数组【行号】【字段名】，经过XSS过滤
     */
     public function query($query = '', $params) {
         is_array($params) or die('Query parameters wrong.');
