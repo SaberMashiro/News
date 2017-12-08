@@ -8,6 +8,7 @@ class Database {
     private $host;  // 主机
     private $port;  // 端口
     private $type = 'mysql';   // 数据库类型
+    private $charset = 'utf8';  // 字符编码
     private $persistent = true;  // 是否使用持久连接
     private static $connect = null;  //静态属性, 避免重复连接
 
@@ -32,26 +33,25 @@ class Database {
      * 参数：无
      */
     private function connect() {
-        $dsn = $this->type . ':host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->database;
+        $dsn = sprintf('%s:host=%s;port=%s;dbname=%s;charset=%s', $this->type, $this->host, $this->port, $this->database, $this->charset);
         $options = [
             PDO::ATTR_PERSISTENT => $this->persistent,  // 是否将建立长连接
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,  // 发生错误将会抛出异常，并且事务会回滚
             PDO::ATTR_EMULATE_PREPARES => false,  // 禁用Prepared Statements的仿真效果（防止宽字节SQL注入攻击）
         ];
-        try { 
+        try {
             $conn = new PDO($dsn, $this->user, $this->password, $options);
         }
         catch (PDOException $e) { 
             die('Connection failed: ' . $e->getMessage());
         }
-        $conn->exec('SET NAMES utf8');
         self::$connect = $conn;
     }
 
     /**
 	* XSS防御
 	*/
-	private function xssPrevent($str){
+	private function xssPrevent($str) {
 		if (!is_array($str)) {
             $str = htmlspecialchars($str, ENT_QUOTES);
         }
