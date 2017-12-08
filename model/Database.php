@@ -1,4 +1,3 @@
-
 <?php
 class Database {
     private $user;  // 用户名
