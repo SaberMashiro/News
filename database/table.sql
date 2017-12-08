@@ -17,6 +17,7 @@ CREATE TABLE news (
     cat_id INT,
     user_id INT,
     title VARCHAR(128) NOT NULL,
+    title_img TEXT,
     synopsis TEXT,
     content TEXT NOT NULL,
     attachment TEXT,
