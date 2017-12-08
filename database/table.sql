@@ -2,8 +2,9 @@ USE news;
 
 CREATE TABLE user (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(32) NOT NULL,
-    password VARCHAR(32) NOT NULL
+    name VARCHAR(32) UNIQUE NOT NULL,
+    password VARCHAR(32) NOT NULL,
+    priority TINYINT UNSIGNED NOT NULL
 );
 
 CREATE TABLE category (
