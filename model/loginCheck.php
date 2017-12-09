@@ -1,5 +1,5 @@
 <?php
-include APP_PATH."db/database.php";
+include APP_PATH."database/database.php";
 session_start();
 class loginCheck
 {

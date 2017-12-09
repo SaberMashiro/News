@@ -9,21 +9,23 @@ class Database {
     private $charset = 'utf8';  // 字符编码
     private $persistent = true;  // 是否使用持久连接
     private static $connect = null;  //静态属性, 避免重复连接
+
     /**
      * 构造函数
      * 参数：用户名，密码，数据库名，主机，端口
      */
-    public function __construct($user = 'root', $password = '123456', $database = 'news', $host = 'localhost', $port = '3306') {
+    public function __construct($user = 'admin', $password = '123456', $database = 'news', $host = 'localhost', $port = '3306') {
         class_exists('PDO') or die('PDO class not found: check the PDO extension configuration in php.ini.');
         $this->user = $user;
         $this->password = $password;
         $this->database = $database;
         $this->host = $host;
         $this->port = $port;
-        if (!self::$connect) {
+        if (is_null(self::$connect)) {
             $this->connect();
         }
     }
+
     /**
      * 连接建立函数
      * 参数：无
@@ -36,28 +38,29 @@ class Database {
             PDO::ATTR_EMULATE_PREPARES => false,  // 禁用Prepared Statements的仿真效果（防止宽字节SQL注入攻击）
         ];
         try {
-            $conn = new PDO($dsn, $this->user, $this->password, $options);
+            self::$connnect = new PDO($dsn, $this->user, $this->password, $options);
         }
         catch (PDOException $e) { 
             die('Connection failed: ' . $e->getMessage());
         }
-        self::$connect = $conn;
     }
+
     /**
-	* XSS防御
-	*/
-	private function xssPrevent($str) {
-		if (!is_array($str)) {
+    * XSS防御
+    */
+    private function xssPrevent($str) {
+        if (!is_array($str)) {
             $str = htmlspecialchars($str, ENT_QUOTES);
         }
-		else {
-			foreach ($str as $key=>$value) {
-				$value = $this->xssPrevent($value);
-			}
-		}
-		return $str;
-	}
-	/** 
+        else {
+            foreach ($str as $key=>$value) {
+                $value = $this->xssPrevent($value);
+            }
+        }
+        return $str;
+    }
+
+    /** 
     * 取得表的字段信息
     * 参数：表名
     * 返回值：数组
@@ -72,10 +75,11 @@ class Database {
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return array_column($result, 'column_name');
     }
-	/**
+
+    /**
     * 查询语句
     * 参数：查询语句字符串，查询语句参数
-	* 返回值：二维数组【行号】【字段名】，经过XSS过滤
+    * 返回值：二维数组【行号】【字段名】，经过XSS过滤
     */
     public function query($query = '', $params) {
         is_array($params) or die('Query parameters wrong.');
