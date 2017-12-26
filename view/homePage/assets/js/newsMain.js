@@ -1,12 +1,12 @@
-
+var requestCount = 0
 var bindReadmore = function(){
     var readMore = document.querySelector("#read-more")
-    var news = {
-        'title':"fjsdifjis",
-        'src':"images/新垣结衣 (2).jpg",
-        'vague': 'fjdsifjosfodsfosjfosjeofeieeeeeeeeeeesvdofjsd',
-        'id':4,
-    }
+    // var news = {
+    //     'title':"fjsdifjis",
+    //     'src':"images/新垣结衣 (2).jpg",
+    //     'vague': 'fjdsifjosfodsfosjfosjeofeieeeeeeeeeeesvdofjsd',
+    //     'id':4,
+    // }
     // var t = template(news)
 
     // readMore.addEventListener("click",function (event) {
@@ -21,7 +21,7 @@ var bindReadmore = function(){
     readMore.addEventListener("click",function (event) {
         var request = {
             method: 'GET',
-            url: '/news/readmore',
+            url: '/news/readmore?count=' + requestCount,
             contentType: 'application/json',
             callback: function(response) {
                 // 不考虑错误情况(断网/服务器返回错误等等)
@@ -31,6 +31,7 @@ var bindReadmore = function(){
                 for(var i = 0; i < news.length;i++){
                     var t = template(news[i])
                     newslist.insertAdjacentHTML('beforeend', t)
+                    requestCount++
                 }
             }
         }
