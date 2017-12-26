@@ -27,12 +27,12 @@ CREATE TABLE news (
     CONSTRAINT fk_news_user FOREIGN KEY(user_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE review (
-    rev_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE comment (
+    comment_id INT AUTO_INCREMENT PRIMARY KEY,
     news_id INT,
     content TEXT NOT NULL,
     time TIMESTAMP,
-    state VARCHAR(16),
+    state TINYINT,
     ip VARCHAR(32),
     CONSTRAINT fk_review_news FOREIGN KEY(news_id) REFERENCES news(news_id) ON DELETE CASCADE
 );
