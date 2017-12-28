@@ -9,7 +9,7 @@ class Title {
     * 返回值：无
     */
     public function __construct() {
-        require 'Database.php';
+        require_once 'Database.php';
         $this->database = new Database();
     }
 
@@ -19,17 +19,22 @@ class Title {
     * 参数：偏移量， 长度
     * 返回值：二维数组[数字][字段]
     */
-    public function load($offset = 0, $length = 3) {
-        $query = "SELECT news_id, title, synposis, title_img, time, category.name AS category, user.name AS user
-                    FROM (
-                         news 
-                         JOIN category
-                           ON news.cat_id = category.cat_id
-                         )
-                    JOIN user
-                      ON news.user_id = user.user_id
+    public function load($offset, $length = 3) {
+        $query = "SELECT news_id, title, icon, synopsis, time, username 
+                    FROM news 
                    LIMIT $offset, $length";
-        return $this->database->execute($query);
+        $result = $this->database->execute($query);
+        foreach ($result as &$value) {
+            $newsId = $value['news_id'];
+            $query = "SELECT name 
+                        FROM category
+                        JOIN category_news
+                          ON category_news.news_id = '$newsId'
+                             AND category_news.category_id = category.category_id";
+            $categories = $this->database->execute($query);
+            $value['categories'] = array_column($categories, 'name');
+        }
+        return $result;
     }
 }
 ?>
