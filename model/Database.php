@@ -14,7 +14,7 @@ class Database {
      * 构造函数
      * 参数：用户名，密码，数据库名，主机，端口
      */
-    public function __construct($user = 'admin', $password = '123456', $database = 'news', $host = 'localhost', $port = '3306') {
+    public function __construct($user = 'root', $password = '123456', $database = 'news', $host = 'localhost', $port = '3306') {
         class_exists('PDO') or die('PDO class not found: check the PDO extension configuration in php.ini.');
         $this->user = $user;
         $this->password = $password;
@@ -38,7 +38,7 @@ class Database {
             PDO::ATTR_EMULATE_PREPARES => false,  // 禁用Prepared Statements的仿真效果（防止宽字节SQL注入攻击）
         ];
         try {
-            self::$connnect = new PDO($dsn, $this->user, $this->password, $options);
+            self::$connect = new PDO($dsn, $this->user, $this->password, $options);
         }
         catch (PDOException $e) { 
             die('Connection failed: ' . $e->getMessage());
