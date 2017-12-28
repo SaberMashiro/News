@@ -14,7 +14,7 @@ class Database {
      * 构造函数
      * 参数：用户名，密码，数据库名，主机，端口
      */
-    public function __construct($user = 'root', $password = '123456', $database = 'news', $host = 'localhost', $port = '3306') {
+    public function __construct($user = 'admin', $password = '123456', $database = 'news', $host = 'localhost', $port = '3306') {
         class_exists('PDO') or die('PDO class not found: check the PDO extension configuration in php.ini.');
         $this->user = $user;
         $this->password = $password;
@@ -81,7 +81,7 @@ class Database {
     * 参数：查询语句字符串，查询语句参数
     * 返回值：二维数组【行号】【字段名】，经过XSS过滤
     */
-    public function query($query = '', $params) {
+    public function query($query, $params) {
         is_array($params) or die('Query parameters wrong.');
         $statement = self::$connect->prepare($query);
         $statement->execute($params);
@@ -92,6 +92,6 @@ class Database {
     public function execute($query) {
         $statement = self::$connect->query($query);
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        return $this->xssPrevent($result);
     }
 }
