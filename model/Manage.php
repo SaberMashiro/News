@@ -9,7 +9,7 @@ class Manage {
      * 返回值：无
      */
     public function __construct($table) {
-        require "Database.php";
+        require_once "Database.php";
         $this->database = new Database();
         $this->table = $table;
     }
@@ -20,7 +20,32 @@ class Manage {
      * 返回值：数组 [数字 => 字段名]
      */
     private function fields() {
-        return $this->database->fields($this->table);
+        $fields = $this->database->fields($this->table);
+        $fields = implode(', ', $fields);
+        return $fields;
+    }
+
+    private function decouple($pairs) {
+        $fields = [];
+        $values = [];
+        foreach ($assoc as $key => $value) {
+            $fields[] = "`" . $key . "`";
+            $values[] = "'" . $value . "'";
+        }
+        $fields = implode(', ', $fields);
+        $values = implode(', ', $values);
+        return ['fields' => $fields, 'values' => $values];
+    }
+
+    private function conditionalize($pairs) {
+        $conditions = [];
+        $parameters = [];
+        foreach ($pairs as $key => $value) {
+            $conditions[] = "`" . $key . "`" . ' = ' . '?';
+            $parameters[] = $value;
+        }
+        $conditions = implode(' AND ', $conditions);
+        return ['conditions' => $conditions, 'parameters' => $parameters];
     }
 
     /**
@@ -31,9 +56,10 @@ class Manage {
     private function stringify($pairs) {
         $string = [];
         foreach ($pairs as $key => $value) {
-            $string[] = $key . ' = ' . $value;
+            $string[] = "`" . $key . "`" . ' = ' . "'" . $value . "'";
         }
-        return implode(', ', $string);
+        $string = implode(', ', $string);
+        return $string;
     }
 
     /**
@@ -41,9 +67,10 @@ class Manage {
      * 参数：数组 [数字 => 值]
      * 返回值：无
      */
-    public function insert($values) {
-        $fields = implode(', ', array_shift(fields()));
-        $values = implode(', ', $values);
+    public function insert($pairs) {
+        $string = $this->decouple($pairs);
+        $fields = $string['fields'];
+        $values = $string['values'];
         $query = "INSERT
                     INTO $this->table
                          ($fields)
@@ -56,12 +83,13 @@ class Manage {
      * 参数：记录的主键
      * 返回值：无
      */
-    public function delete($id) {
-        $idField = fields()[0];
+    public function delete($conditions) {
+        $string = $this->conditionalize($conditions);
+        $conditions = $string['conditions'];
         $query = "DELETE
                     FROM $this->table
-                   WHERE $idField = ?";
-        $params = [$id];
+                   WHERE $conditions";
+        $params = $string['parameters'];
         $this->database->query($query, $params);
     }
 
@@ -70,13 +98,14 @@ class Manage {
      * 参数：记录的主键， 关联数组[字段名 => 值]
      * 返回值：无
      */
-    public function update($id, $pairs) {
-        $pairs = stringify($pairs);
-        $idField = fields()[0];
+    public function update($pairs, $conditions) {
+        $pairs = $this->stringify($pairs);
+        $string = $this->conditionalize($conditions);
+        $conditions = $string['conditions'];
         $query = "UPDATE $this->table
                      SET $pairs
-                   WHERE $idField = ?";
-        $params = [$id];
+                   WHERE $conditions";
+        $params = $string['parameters'];
         $this->database->query($query, $params);
     }
 
@@ -86,7 +115,7 @@ class Manage {
      * 返回值：二维数组[行号][字段名]
      */
     public function select($offset, $length) {
-        $fields = implode(', ', fields());
+        $fields = $this->fields();
         $query = "SELECT $fields
                     FROM $this->table
                    LIMIT $offset, $length";
