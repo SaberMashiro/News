@@ -9,7 +9,7 @@ class Detail {
     * 返回值：无
     */
     public function __construct() {
-        require "Database.php";
+        require_once "Database.php";
         $this->database = new Database();
     }
 
@@ -19,11 +19,12 @@ class Detail {
     * 参数：新闻ID
     * 返回值：字符串 "新闻内容"
     */
-    public function load($articleId) {
-        $query = "SELECT content
+    public function load($newsId) {
+        $query = "SELECT title, content, time
                     FROM news
-                   WHERE news_id = '$articleId'";
-        return $this->database->execute($query)[0];
+                   WHERE news_id = ?";
+        $params = [$newsId];
+        return $this->database->query($query, $params)[0];
     }
 }
 ?>
