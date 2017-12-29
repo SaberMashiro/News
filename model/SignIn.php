@@ -1,7 +1,8 @@
 <?php
-include APP_PATH."database/database.php";
+include "database.php";
+error_reporting(0);
 session_start();
-class loginCheck
+class SignIn
 {
 	private $username;
 	private $password;
@@ -32,13 +33,14 @@ class loginCheck
 	public function render()
 	{
 		$pdo = new Database();
-		$sql = "select password from user where name =?";
+		$sql = "select password from user where username =?";
 		$param = array($this->username);
 		$content = $pdo -> query($sql,$param);
-		if($content[0]['password'] === $this->password){
-			echo json_encode(array("location"=>"index.php","success"=>true));
+		if(isset($this->password) && $content[0]['password'] === $this->password){
+			$this->setToken();
+			echo json_encode(['verified' => true, 'location' => '/manage']);
 		}else{
-			echo json_encode(array("location"=>"error.html","success"=>false));
+			echo json_encode(['verified' => false]);
 		}
 		
 	}

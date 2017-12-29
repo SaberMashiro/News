@@ -34,7 +34,7 @@ class Comment {
     public function store($comment) {
         $string = $this->decouple($comment);
         $fields = $string['fields'];
-        $values = $stirng['values'];
+        $values = $string['values'];
         $query = "INSERT
                     INTO comment 
                          ($fields)

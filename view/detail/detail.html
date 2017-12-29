@@ -1,65 +1,72 @@
 <!DOCTYPE HTML>
-<!--
-	Fractal by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
 		<title>新闻详情</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="../view/detail/assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="../view/detail/assets/css/main.css" />
 		<link rel="stylesheet" href="../view/detail/assets/css/newsMain.css">
-		<!--[if lte IE 8]><link rel="stylesheet" href="../view/detail/assets/css/ie8.css" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" href="../view/detail/assets/css/ie9.css" /><![endif]-->
 	</head>
 	<body id="top">
 
 		<!-- Header -->
-			<header id="header">
-				<div class="content">
-					<h1><a href="#">吊炸天的新闻网站</a></h1>
-					<p>By 李晓晨，何佳林，王喆，<br />
-					吴云明，赵阳阳</p>
-				</div>
-				<div class="image phone"><div class="inner"><img src="view/detail/images/screen.jpg" alt="" /></div></div>
-			</header>
+		<header id="header">
+			<div class="content">
+				<h1><a href="/#news">没技术的新闻网站</a></h1>
+				<p>作者：李晓晨，何佳林，王喆<br>
+					          赵阳阳，吴云明</p>
+			</div>
+			<div class="image phone"><div class="inner"><img src="view/detail/images/screen.jpg" alt="" /></div></div>
+		</header>
 
 		<!-- One -->
-			<section id="one" class="wrapper style2 special">
-				<header class="major">
-                    <header class="major">
-                        <h2>{{newstitle}}</h2>
-                        <h5 class="date">日期：{{newsdate}}</h3>
-                        <img src="" alt="">
-                        <p class="news-main">{{newscontent}}</p>
-                    </header>
-				</header>
-				<ul class="icons major">
-					<li><span class="icon fa-camera-retro"><span class="label">Shoot</span></span></li>
-					<li><span class="icon fa-refresh"><span class="label">Process</span></span></li>
-					<li><span class="icon fa-cloud"><span class="label">Upload</span></span></li>
-				</ul>
-			</section>
+		<a name="news_body"></a>
+		<section id="one" class="wrapper style2 special">
+			<header class="major">
+                <header class="major">
+                    <h2>{{newstitle}}</h2>
+                    <h5 class="date">日期：{{newsdate}}</h3>
+                    <img src="" alt="">
+                    <p class="news-main">{{newscontent}}</p>
+                </header>
+			</header>
+		</section>
 
+		<!-- Two -->
+		<section id="two" class="wrapper style2 special">
+			<header class="major">
+				<header class="major">
+					<h4>添加评论</h4>
+					<p class="news-main"><input id="two_guestname" type="text" placeholder="昵称"></p>
+					<p class="news-main"><textarea id="two_content" placeholder="评论内容"></textarea></p>
+					<button id="two_submit" type="submit">提交</button>
+				</header>
+			</header>
+		</section>
+
+		<!-- Three -->
+		<section id="three" class="wrapper style2 special">
+			<header class="major">
+				<header class="major">
+					<h4>评论</h4>
+					<div id="three_comments"></div>
+				</header>
+			</header>
+		</section>
 
 		<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-				</ul>
-			</footer>
+		<footer id="footer">
+			<ul class="icons">
+				<li><button id="three_more" type="submit">更多</button></li>
+			</ul>
+		</footer>
 
 		<!-- Scripts -->
-			<script src="../view/detail/assets/js/jquery.min.js"></script>
-			<script src="../view/detail/assets/js/jquery.scrolly.min.js"></script>
-			<script src="../view/detail/assets/js/skel.min.js"></script>
-			<script src="../view/detail/assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="../view/detail/assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="../view/detail/assets/js/main.js"></script>
+		<script src="../view/detail/assets/js/jquery.min.js"></script>
+		<script src="../view/detail/assets/js/jquery.scrolly.min.js"></script>
+		<script src="../view/detail/assets/js/skel.min.js"></script>
+		<script src="../view/detail/assets/js/util.js"></script>
+		<script src="../view/detail/assets/js/main.js"></script>
+		<script src="../view/detail/comment.js"></script>
 	</body>
 </html>

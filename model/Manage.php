@@ -1,4 +1,5 @@
 <?php
+session_start();
 class Manage {
     private $database; // 数据库
     private $table; // 表名
@@ -9,9 +10,11 @@ class Manage {
      * 返回值：无
      */
     public function __construct($table) {
-        require_once "Database.php";
-        $this->database = new Database();
-        $this->table = $table;
+		if(isset($_SESSION['token'])&&$_COOKIE['token']===$_SESSION['token']){
+			require_once "Database.php";
+			$this->database = new Database();
+			$this->table = $table;
+		}
     }
 
     /**
@@ -95,12 +98,13 @@ class Manage {
 
     /**
      * 更新
-     * 参数：记录的主键， 关联数组[字段名 => 值]
+     * 参数：关联数组[字段名 => 值]
      * 返回值：无
      */
     public function update($pairs, $conditions) {
         $pairs = $this->stringify($pairs);
         $string = $this->conditionalize($conditions);
+		var_dump($string);
         $conditions = $string['conditions'];
         $query = "UPDATE $this->table
                      SET $pairs
